@@ -1,2 +1,3 @@
-# have-fun-with-go
-Some fun exercise learning and practicing with go lang
+# go learning repo
+This repo contains both the small exercises learning basic syntax of golang
+Also this repo contains small projects learning and using golang
