@@ -95,4 +95,5 @@ var getCmd = &cobra.Command{
 }
 ```
 
-
+### how to use this cli locally
+run `go run main.go get` or `go build main.go` then run  `./main get`
