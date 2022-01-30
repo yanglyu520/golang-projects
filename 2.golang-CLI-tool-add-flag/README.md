@@ -95,7 +95,6 @@ var getCmd = &cobra.Command{
 }
 ```
 
-### block that checks if a flag exists 
 #### 6. Add a flag to pass a keyword parameter
 
 In the subcommand.go file, add the below code to add a flag to the command
