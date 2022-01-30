@@ -11,6 +11,8 @@ import (
 	"io/ioutil"
 	"log"
 	"github.com/spf13/cobra"
+  "math/rand"
+  "time"
 )
 
 // getCmd represents the get command
@@ -19,18 +21,26 @@ var getCmd = &cobra.Command{
 	Short: "get a randomjoke from the jokeapi",
 	Long: `get a randomjoke from the jokeapi`,
 	Run: func(cmd *cobra.Command, args []string) {
-		getJoke()
+		keyword, _ := cmd.Flags().GetString("keyword")
+
+		if keyword != "" {
+			getJokeWithKeyword(keyword)
+		} else {
+			getJoke()
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(getCmd)
+  getCmd.PersistentFlags().String("keyword", "", "search the jokes by keyword")
+
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// getCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// 
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
@@ -95,4 +105,52 @@ func jsonUnmarshal(responseBytes []byte) string {
   }
   
   return joke.Joke
+}
+
+//----function to get a joke with keyword------
+func getJokeWithKeyword(keyword string) () {
+  url := fmt.Sprintf("https://icanhazdadjoke.com/search?term=%s", keyword)
+  responseBytes := getJokeRequest(url)
+  joke := jsonUnmarshalWithKeyword(responseBytes)
+  fmt.Println(joke)
+}
+
+// struct for joke api that returns json for joke with keyword
+type JokeWithKeyword struct {
+	CurrentPage  int `json:"current_page"`
+	Limit        int `json:"limit"`
+	NextPage     int `json:"next_page"`
+	PreviousPage int `json:"previous_page"`
+	Results      []Result `json:"results"`
+	SearchTerm string `json:"search_term"`
+	Status     int    `json:"status"`
+	TotalJokes int    `json:"total_jokes"`
+	TotalPages int    `json:"total_pages"`
+}
+
+type Result struct {
+  ID   string `json:"id"`
+	Joke string `json:"joke"`
+}
+
+//func that unmarshal the joke json to the golang struct with keyword
+func jsonUnmarshalWithKeyword(responseBytes []byte) string {
+  rand.Seed(time.Now().Unix())
+  joke := JokeWithKeyword{}
+  
+  if err := json.Unmarshal(responseBytes, &joke); err != nil {
+    fmt.Printf("Could not unmarshal responseBytes. %v", err)
+  } 
+  
+  length := joke.TotalJokes
+  min := 0
+  max := length - 1
+  
+  if length <= 0 {
+    return "Could not find joke with this keyword"
+  } else {
+    randomNum := min + rand.Intn(max-min)
+    return joke.Results[randomNum].Joke
+  }
+  
 }
