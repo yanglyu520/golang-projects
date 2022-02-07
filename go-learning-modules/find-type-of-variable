@@ -1,0 +1,20 @@
+// You can edit this code!
+// Click here and start typing.
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	c := "7777"
+  
+  // 1.using %T format specifier to determine the datatype of the variables
+	fmt.Printf("c %T\n", c)
+  // 2.using TypeOf() method of reflect package to determine the datatype of the variables
+  fmt.Println("c", reflect.TypeOf(c))
+  // 3.using ValueOf() method of reflect package to determine the value of the variable
+  // Kind() method returns the datatype of the value fetched by the ValueOf() method
+  fmt.Println("c", reflect.ValueOf(c).Kind())
+}
