@@ -6,7 +6,7 @@ Run  `go test`, to test golang tests.
 The test file name is within the same folder as the go code, and usually with underscore plus test. Go build will automatically ignore those test files. Ex:
 `main.go, main_test.go`
 
-### 2.```Test Function Naming Conventions
+### 2. Test Function Naming Conventions
 The function is name as below. Put the type or Function name after the word Test
 
 ```go
