@@ -1,6 +1,7 @@
 ## Basic Golang Test
 
-Run  `go test`, to test golang tests.
+Run  `go test` to test golang tests.
+Run `go test -v` to turn on the verbose mode.
 
 ### 1.Test File Naming Conventions
 The test file name is within the same folder as the go code, and usually with underscore plus test. Go build will automatically ignore those test files. Ex:
